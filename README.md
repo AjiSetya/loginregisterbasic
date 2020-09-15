@@ -1,6 +1,6 @@
-# logkerja
+# login register basic
 
-App for tracking employe's job
+Membuat sistem login register user dasar ajaa
 
 ## Getting Started
 
