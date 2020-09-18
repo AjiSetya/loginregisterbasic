@@ -13,7 +13,7 @@ class Validation {
     return null;
   }
 
-  String validateName(String text){
+  static String validateName(String text){
     if(text.isEmpty){
       return 'Nama harus diisi';
     }
