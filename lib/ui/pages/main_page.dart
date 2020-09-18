@@ -6,57 +6,37 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  String _username;
 
   signOut() async {
-    SharedPreferences _pref = await sharedPreferences;
-    setState(() {
-      _pref.setString(kEmailUser, null);
-      _pref.setString(kNameUser, null);
-      _pref.setInt(kPrefLogin, 0);
-      loginStatus = LoginStatus.notSignIn;
-    });
-  }
-
-  _cekLoginStatus() async {
-    SharedPreferences _pref = await sharedPreferences;
-
-    var value;
-    setState(() {
-      value = _pref.getInt(kPrefLogin);
-
-      loginStatus = value == 1 ? LoginStatus.signIn : LoginStatus.notSignIn;
-    });
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    _pref.setBool(kPrefLogin, false);
+    Navigator.of(context).pushNamedAndRemoveUntil(kLoginPage, (route) => false);
   }
 
   @override
-  void initState() {
+  Future<void> initState() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    _username = _pref.getString(kNameUser);
     super.initState();
-    _cekLoginStatus();
   }
 
   @override
   Widget build(BuildContext context) {
-    switch (loginStatus) {
-      case LoginStatus.signIn :
-        return Scaffold(
-            appBar: AppBar(
-              title: Text("Halaman Dashboard"),
-              actions: <Widget>[
-                IconButton(
-                  onPressed: () {
-                    signOut();
-                  },
-                  icon: Icon(Icons.lock_open),
-                )
-              ],
-            ),
-            body: Center(
-              child: Text("Dashboard"),
-            ));
-        break;
-      case LoginStatus.notSignIn:
-        return LoginPage();
-        break;
-    }
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Halaman Dashboard"),
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {
+                signOut();
+              },
+              icon: Icon(Icons.lock_open),
+            )
+          ],
+        ),
+        body: Center(
+          child: Text("Welcome $_username"),
+        ));
   }
 }
